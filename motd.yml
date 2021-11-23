@@ -1,0 +1,30 @@
+---
+  - name: Change Banner
+    hosts: proxy
+    become: yes
+    tasks:
+      - name: Modify motd file
+        lineinfile: 
+          path: /etc/motd
+          line: "Welcome to the HAProxy Server"
+          create: yes
+
+  - name: Change Banner
+    hosts: webservers
+    become: yes
+    tasks:
+      - name: Modify motd file
+        lineinfile:
+          path: /etc/motd
+          line: "Welcome to the Apache Servers"
+          create: yes
+
+  - name: Change Banner
+    hosts: database
+    become: yes
+    tasks:
+      - name: Modify motd file
+        lineinfile:
+          path: /etc/motd
+          line: "Welcome to the Database Server"
+          create: yes       
