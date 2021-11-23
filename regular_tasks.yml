@@ -1,0 +1,15 @@
+---
+  - name: Schedule some tasks
+    hosts: proxy
+    become: yes
+    tasks:
+      - name: Create the file in var log
+        file:
+          path: /var/log/time.log
+          state: touch
+          owner: root
+      - name:
+        cron:
+          name: "Find date and time"
+          minute: "0"
+          job: "date > /var/log/time.log"
