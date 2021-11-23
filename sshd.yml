@@ -1,0 +1,24 @@
+---
+  - name: Modify the sshd config file
+    hosts: all
+    become: yes
+    vars:
+      - sshd_path: "/etc/ssh/sshd_config"
+    tasks:
+      - name: Set Banner
+        lineinfile:
+          path: "{{ sshd_path }}"
+          regexp: "#Banner none"
+          line: "Banner /etc/motd"
+
+      - name: Disable X11 Forwarding
+        lineinfile:
+          path: "{{ sshd_path }}"
+          regexp: "#X11Forwarding no"
+          line: "X11Forwarding no"
+
+      - name: Swith MaxAuthTries to 3
+        lineinfile:
+          path: "{{ sshd_path }}"
+          regexp: "#MaxAuthTries 6"
+          line: "MaxAuthTries 3"

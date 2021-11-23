@@ -1,0 +1,52 @@
+---
+  - name: Create users
+    hosts: webservers
+    become: yes
+    vars_files:
+      - vars/user_list.yml
+      - secret.yml
+    tasks:
+      - name: Create em
+        user:
+          name: "{{ item.name }}"
+          password: "{{ user_password | password_hash('sha512') }}"
+          groups: wheel
+          shell: /bin/bash
+        with_items:
+          - "{{ users }}"
+        when: "{{ item.uid }} < 2000 and {{ item.uid }} >= 1000"
+
+      - name: Set authorized key taken from file
+        authorized_key:
+          user: "{{ item.name }}"
+          state: present
+          key: "{{ lookup('file', '/home/daniel/.ssh/id_rsa.pub') }}"
+        with_items:
+          - "{{ users }}"
+        when: "{{ item.uid }} < 2000 and {{ item.uid }} >= 1000"
+
+  - name: Create users
+    hosts: database
+    become: yes
+    vars_files:
+      - vars/user_list.yml
+      - secret.yml
+    tasks:
+      - name: Create em
+        user:
+          name: "{{ item.name }}"
+          password: "{{ database_password | password_hash('sha512') }}"
+          groups: wheel
+          shell: /bin/bash
+        with_items:
+          - "{{ users }}"
+        when: "{{ item.uid }} < 3000 and {{ item.uid }} >= 2000"
+
+      - name: Set authorized key taken from file
+        authorized_key:
+          user: "{{ item.name }}"
+          state: present
+          key: "{{ lookup('file', '/home/daniel/.ssh/id_rsa.pub') }}"
+        with_items:
+          - "{{ users }}"
+        when: "{{ item.uid }} < 3000 and {{ item.uid }} >= 2000"         
