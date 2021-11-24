@@ -8,7 +8,7 @@
     tasks:
       - name: Create em
         user:
-          name: "{{ item.name }}"
+          name: "{{ item.username }}"
           password: "{{ user_password | password_hash('sha512') }}"
           groups: wheel
           shell: /bin/bash
@@ -18,7 +18,7 @@
 
       - name: Set authorized key taken from file
         authorized_key:
-          user: "{{ item.name }}"
+          user: "{{ item.username }}"
           state: present
           key: "{{ lookup('file', '/home/daniel/.ssh/id_rsa.pub') }}"
         with_items:
@@ -34,7 +34,7 @@
     tasks:
       - name: Create em
         user:
-          name: "{{ item.name }}"
+          name: "{{ item.username }}"
           password: "{{ database_password | password_hash('sha512') }}"
           groups: wheel
           shell: /bin/bash
@@ -44,7 +44,7 @@
 
       - name: Set authorized key taken from file
         authorized_key:
-          user: "{{ item.name }}"
+          user: "{{ item.username }}"
           state: present
           key: "{{ lookup('file', '/home/daniel/.ssh/id_rsa.pub') }}"
         with_items:
