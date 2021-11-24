@@ -16,15 +16,6 @@
           - "{{ users }}"
         when: "{{ item.uid }} < 2000 and {{ item.uid }} >= 1000"
 
-      - name: Set authorized key taken from file
-        authorized_key:
-          user: "{{ item.username }}"
-          state: present
-          key: "{{ lookup('file', '/home/daniel/.ssh/id_rsa.pub') }}"
-        with_items:
-          - "{{ users }}"
-        when: "{{ item.uid }} < 2000 and {{ item.uid }} >= 1000"
-
   - name: Create users
     hosts: database
     become: yes
@@ -41,12 +32,3 @@
         with_items:
           - "{{ users }}"
         when: "{{ item.uid }} < 3000 and {{ item.uid }} >= 2000"
-
-      - name: Set authorized key taken from file
-        authorized_key:
-          user: "{{ item.username }}"
-          state: present
-          key: "{{ lookup('file', '/home/daniel/.ssh/id_rsa.pub') }}"
-        with_items:
-          - "{{ users }}"
-        when: "{{ item.uid }} < 3000 and {{ item.uid }} >= 2000"         
