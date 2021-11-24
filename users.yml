@@ -1,6 +1,6 @@
 ---
   - name: Create users
-    hosts: webservers
+    hosts: webserver
     become: yes
     vars_files:
       - vars/user_list.yml
