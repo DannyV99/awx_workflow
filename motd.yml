@@ -10,7 +10,7 @@
           create: yes
 
   - name: Change Banner
-    hosts: webservers
+    hosts: webserver
     become: yes
     tasks:
       - name: Modify motd file
